@@ -1,0 +1,16 @@
+server:
+  port: 8761
+
+eureka:
+  server:
+    try-sync-retry-wait-ms: 0
+    registry-sync-retries: 0
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    healthcheck:
+      enabled: true
