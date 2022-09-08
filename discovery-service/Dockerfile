@@ -3,7 +3,7 @@ VOLUME /tmp
 MAINTAINER pouya
 EXPOSE 8761
 ADD target/discovery-service-*.jar /discovery-service.jar
-ENTRYPOINT ["java","-jar", "/discovery-service.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=docker","-jar", "/discovery-service.jar"]
 
 # add jasypt secret-key in jar file:
 #ENTRYPOINT ["java", "-jar", "/springboot-real.jar", "--jasypt.encryptor.password=secret-key"]

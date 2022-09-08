@@ -1,31 +1,42 @@
 version: '3.9'
 
-#networks:
-#  app-cluster:
-#    name: app-cluster
-#    driver: bridge
+networks:
+  my-network:
+    name: my-network
+    driver: bridge
 
 services:
-  discovery-app:
-    container_name: discovery-app
+  redis-service:
+    container_name: redis
+    image: 'redis'
+    ports:
+      - "6379:6379"
+  discovery-service:
+    container_name: discovery-service
     image: discovery-service:1.0.0
     build:
       context: ./discovery-service
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
-#    networks:
-#      - app-cluster
-  gateway-app:
-    container_name: gateway-app
+    networks:
+      - app-cluster
+  gateway-service:
+    container_name: gateway-service
     image: gateway-service:1.0.0
     build:
       context: ./gateway-service
       dockerfile: Dockerfile
     ports:
       - "8091:8091"
-#    networks:
-#      - app-cluster
+    environment:
+      eureka.client.enabled: 'true'
+      eureka.host: discovery-service
+      SPRING_REDIS_HOST: redis
+    networks:
+      - app-cluster
+    depends_on:
+      - redis
 #  order-app:
 #    container_name: order-app
 #    image: order-service:1.0.0

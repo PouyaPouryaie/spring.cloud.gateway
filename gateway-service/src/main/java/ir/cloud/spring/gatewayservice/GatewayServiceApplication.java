@@ -11,8 +11,10 @@ import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -26,7 +28,7 @@ public class GatewayServiceApplication {
     }
 
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder){
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("order", r -> r
                         .path("/order/**")
@@ -34,6 +36,15 @@ public class GatewayServiceApplication {
                                 .circuitBreaker(c -> c.setName("orderBreak").setFallbackUri("/defaultFallback"))
                                 .requestRateLimiter().configure(c -> c.setRateLimiter(redisRateLimiter()))
                         ).uri("lb://order-service"))
+                .route("customer", r -> r
+                        .path("/customer/**")
+                        .filters(f -> f.filter((exchange, chain) -> {
+                                    ServerHttpRequest req = exchange.getRequest();
+                                    ServerWebExchangeUtils.addOriginalRequestUrl(exchange, req.getURI());
+                                    return chain.filter(exchange);
+                                }).rewritePath("/customer/(?<segment>.*)", "/${segment}")
+                                .addRequestHeader("local", "fa"))
+                        .uri("lb://customer-service"))
                 .build();
     }
 
