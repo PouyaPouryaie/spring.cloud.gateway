@@ -1,0 +1,7 @@
+spring:
+  config:
+    activate:
+      on-profile: debug
+eureka:
+  instance:
+    hostname: localhost
