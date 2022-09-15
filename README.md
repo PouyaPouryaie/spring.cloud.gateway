@@ -15,7 +15,10 @@ and how can use spring cloud gateway features
 - Request Rate Limiting
 - use Project Reactor and Spring Boot 2.0
 
-## Run project
+## Run debugMode:
+1 - add -Dspring.profiles.active=debug at vm option and start project.
+
+## Run project container base
 1 - use dockerfile and docker-compose command for run app
 
 - creat package:

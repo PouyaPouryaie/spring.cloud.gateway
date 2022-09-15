@@ -1,9 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: docker
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka/
+    healthcheck:
+      enabled: true
+---
+spring:
+  config:
+    activate:
+      on-profile: debug
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
     healthcheck:
       enabled: true
+---
 server:
   port: 8090
 spring:

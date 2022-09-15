@@ -20,7 +20,7 @@ services:
     ports:
       - "8761:8761"
     networks:
-      - app-cluster
+      - my-network
   gateway-service:
     container_name: gateway-service
     image: gateway-service:1.0.0
@@ -34,16 +34,16 @@ services:
       eureka.host: discovery-service
       SPRING_REDIS_HOST: redis
     networks:
-      - app-cluster
+      - my-network
     depends_on:
       - redis
-#  order-app:
-#    container_name: order-app
-#    image: order-service:1.0.0
-#    build:
-#      context: ./order
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8090:8090"
-#    networks:
-#      - app-cluster
+  order-service:
+    container_name: order-service
+    image: order-service:1.0.0
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    networks:
+      - my-network

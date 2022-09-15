@@ -61,7 +61,7 @@ spring:
             - RewritePath=/api/payment/(?<path>.*), $\{path}
             - name: RequestRateLimiter
               args:
-                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.replenishRate: 20 # show how many request allow in seconds
                 redis-rate-limiter.burstCapacity: 40
             - name: CircuitBreaker
               args:
