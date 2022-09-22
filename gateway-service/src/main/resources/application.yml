@@ -71,16 +71,16 @@ resilience4j.circuitbreaker:
   configs:
     custom:
       registerHealthIndicator: true
-      slidingWindowType: TIME_BASED
-      slidingWindowSize: 10
-      minimumNumberOfCalls: 5
-      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED # count or time base
+      slidingWindowSize: 10 # we will use this parameter to record the last N requests to make the circuit breaker trip or open.
+      failureRateThreshold: 5 # the percentage of the total sliding-window-size that fails and will cause the circuit breaker trips to open state
+      slowCallRateThreshold: 30 # it shows the percentage of the total sliding-window-size that fails which will cause the circuit breaker trips to open state
+      slowCallDurationThreshold: 200ms # is the time taken to indicate the received response exceeds this configuration time will be recorded as an error count
+      minimumNumberOfCalls: 5 # Configures the minimum number of calls which are required (per sliding window period) before the CircuitBreaker can calculate the error rate or slow call rate.
+      permittedNumberOfCallsInHalfOpenState: 3 # Configures the number of permitted calls when the CircuitBreaker is half open.
+      waitDurationInOpenState: 2s # The time that the CircuitBreaker should wait before transitioning from open to half-open.
       automaticTransitionFromOpenToHalfOpenEnabled: true
-      waitDurationInOpenState: 2s
-      failureRateThreshold: 5
       eventConsumerBufferSize: 10
-      slowCallDurationThreshold: 200ms
-      slowCallRateThreshold: 30
   instances:
     backendA:
       baseConfig: custom
