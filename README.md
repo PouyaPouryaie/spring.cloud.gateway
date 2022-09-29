@@ -13,6 +13,7 @@ and how can use spring cloud gateway features
 - use Path rewrite for get request and modify route for internal services
 - use circuit breaker pattern
 - Request Rate Limiting
+- use Retry mechanism with Circuit Breaker to communicate with externalService and become dependent on the upstream service. <br> The order-module is written as example of Retry and you can see https://reflectoring.io/retry-with-springboot-resilience4j/ for more detail 
 - use Project Reactor and Spring Boot 2.0
 
 ## Run debugMode:

@@ -20,6 +20,7 @@ public class OrderRouter {
     public RouterFunction<ServerResponse> orderRouterFunction() {
         return RouterFunctions.nest(path("/order"),
                 RouterFunctions.route(GET("/hello").and(accept(MediaType.APPLICATION_JSON)), orderHandler::hello)
-                        .andRoute(GET("/find/{id}").and(accept(MediaType.APPLICATION_JSON)), orderHandler::find));
+                        .andRoute(GET("/find/{id}").and(accept(MediaType.APPLICATION_JSON)), orderHandler::find)
+                        .andRoute(GET("/externalOrder/{id}").and(accept(MediaType.APPLICATION_JSON)), orderHandler::findExternalOrder));
     }
 }

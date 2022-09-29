@@ -10,6 +10,12 @@ import reactor.core.publisher.Mono;
 @Component
 public class OrderHandler {
 
+    private final ExternalOrderService externalOrderService;
+
+    public OrderHandler(ExternalOrderService externalOrderService) {
+        this.externalOrderService = externalOrderService;
+    }
+
     public Mono<ServerResponse> hello(ServerRequest request) {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(new Order("hello world")));
@@ -19,5 +25,12 @@ public class OrderHandler {
         String id = request.pathVariable("id");
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(new Order("Hello " + id)));
+    }
+
+    public Mono<ServerResponse> findExternalOrder(ServerRequest request) {
+        String id = request.pathVariable("id");
+        String result = externalOrderService.fetchData(id);
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(new Order("Hello External " + result)));
     }
 }

@@ -47,6 +47,12 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
+        <!--   RetryService   -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
         <!--		<dependency>-->
         <!--			<groupId>org.postgresql</groupId>-->
         <!--			<artifactId>postgresql</artifactId>-->

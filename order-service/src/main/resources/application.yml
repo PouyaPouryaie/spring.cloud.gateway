@@ -33,3 +33,28 @@ management:
   endpoint:
     health:
       show-details: always
+resilience4j:
+  retry:
+    retry-aspect-order: 2
+    instances:
+      myRetry:
+        max-attempts: 3
+        wait-duration: 5s
+        enable-exponential-backoff: true # because we want duration between request is not fix rate
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - org.springframework.web.client.RestClientException
+        ignore-exceptions:
+          - ir.cloud.spring.orderservice.IgnoreException
+  circuitbreaker:
+    circuit-breaker-aspect-order: 1 # base on https://resilience4j.readme.io/docs/getting-started-3#aspect-order, you have to change order of Resilience4j function -> Retry ( CircuitBreaker ( RateLimiter ( TimeLimiter ( Bulkhead ( Function ) ) ) ) )
+    instances:
+      myCircuitBreaker:
+        wait-duration-in-open-state: 1m
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-type: count-based
+        sliding-window-size: 5
+        minimum-number-of-calls: 5
+        slow-call-duration-threshold: 10s
+        slow-call-rate-threshold: 60
+        failure-rate-threshold: 60
